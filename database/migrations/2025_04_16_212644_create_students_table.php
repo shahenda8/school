@@ -24,6 +24,7 @@ return new class extends Migration
             $table->foreignId('class_models_id')->constrained()->cascadeOnDelete();
             $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
             $table->text('address');
+            $table->boolean('attend');
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
