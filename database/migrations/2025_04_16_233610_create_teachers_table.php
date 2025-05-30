@@ -22,7 +22,6 @@ return new class extends Migration
             $table->string('user_name')->unique();
             $table->string('phone');
             $table->date('start_date');
-            $table->boolean('attend');
             $table->string('email')->unique();
             $table->string('password')->unique();
             $table->text('address');

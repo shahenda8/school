@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('class_teachers', function (Blueprint $table) {
+        Schema::create('news', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_model_id')->constrained()->cascadeOnDelete();
             $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
-            $table->string('day'); // or you can use enum(['Monday', 'Tuesday', ...]) if needed
+            $table->text('content');
+            $table->date('date');
+            $table->string('title');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('class_teachers');
+        Schema::dropIfExists('news');
     }
 };

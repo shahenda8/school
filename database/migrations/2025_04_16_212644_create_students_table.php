@@ -17,14 +17,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('user_name')->unique();
             $table->string('password')->unique();
-            $table->float('degree')->nullable(); // If it can be empty
             $table->string('phone');
             $table->string('email')->unique();
             $table->string('national_id')->unique();
             $table->foreignId('class_models_id')->constrained()->cascadeOnDelete();
             $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('guardian_id')->nullable()->constrained()->cascadeOnDelete();
             $table->text('address');
-            $table->boolean('attend');
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

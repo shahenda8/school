@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exams', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('class_model_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('type');
+            $table->enum('files', ['pdf', 'video']);
             $table->integer('term');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exams');
+        Schema::dropIfExists('materials');
     }
 };
