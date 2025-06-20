@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Comment;
+use App\Models\Guardian;
 use App\Models\ClassModel;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +12,11 @@ class Student extends Model
     protected $guarded = ['id'];
 
     public function classModel(){
-        return $this->belongsTo(ClassModel::class);
+        return $this->belongsTo(ClassModel::class, 'class_models_id', 'id');
+    }
+
+    public function gardian(){
+        return $this->belongsTo(Guardian::class, 'guardian_id', 'id');
     }
 
     public function comments(){

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // Auto-incrementing ID column
             $table->integer('no_student'); // Number of students (integer)
             $table->string( 'name'); // Class name (string)
+            $table->foreignId( 'stage_id')->constrained()->cascadeOnDelete(); // Class name (string)
             $table->timestamps(); // created_at and updated_at columns
         });
     }

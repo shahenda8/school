@@ -14,7 +14,7 @@ class Teacher extends Model
     protected $guarded = ['id'];
 
     public function classModel(){
-        return $this->belongsToMany(ClassModel::class,'class_teachers');
+        return $this->belongsToMany(ClassModel::class,'time_table');
    }
 
    public function comments(){
