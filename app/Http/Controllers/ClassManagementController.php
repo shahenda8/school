@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClassModel;
 use App\Models\Stage;
 use App\Models\Student;
-use App\Models\SubjectTime;
+use App\Models\Subject;
 use App\Models\Teacher;
+use App\Models\Guardian;
 use App\Models\TimeTable;
-use Illuminate\Http\Request;
+use App\Models\ClassModel;
 use PHPUnit\Metadata\Uses;
+
+use App\Models\SubjectTime;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ClassManagementController extends Controller
 {
@@ -139,12 +143,7 @@ class ClassManagementController extends Controller
 
     public function ViewClassTable($classId)
     {
-// $data = TimeTable::where('class_model_id', $classId)
-//     ->with(['classModel', 'subject'])
-//     ->orderBy('subject_time_id')
-//     ->get()
-//     ->groupBy('day');
-//         $subjectTimes = SubjectTime::get();
+
 
 $data= TimeTable::where('class_model_id', $classId)
 ->with('subject')
@@ -153,4 +152,100 @@ $subjectTimes = SubjectTime::get();
         return view('admin/classtimeTable', compact('data', 'subjectTimes'));
     }
 
+    public function createTeacher()
+    {
+        $subjects = Subject::all();
+        $stages = Stage::all();
+
+        return view('admin.CreateTeacher', compact('subjects', 'stages'));
+    }
+
+    public function storeTeacher(Request $request)
+    {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'user_name' => 'required|string|unique:teachers,user_name',
+                'password' => 'required|string|min:6',
+                'email' => 'required|email|unique:teachers,email',
+                'phone' => 'nullable|string|max:20',
+                'salary' => 'nullable|numeric',
+                'national_id' => 'nullable|string|max:20',
+                'address' => 'nullable|string|max:255',
+                'start_date' => 'required|date',
+                'subject_id' => 'required|exists:subjects,id',
+                'stage_id' => 'required|exists:stages,id',
+            ]);
+
+            $validated['password'] = Hash::make($validated['password']);
+            $validated['subject_name'] = Subject::where('id', $request->subject_id)->select('id', 'name')->first()->name;
+            $validated['stage_name'] = Stage::where('id', $request->stage_id)->select('id', 'name')->first()->name;
+
+            Teacher::create($validated);
+
+            return redirect()->route('admin.teachers.create')->with('success', 'Added');
+    }
+    public function createStudent()
+{
+    $stages = Stage::all();
+    $classes = ClassModel::all();
+    $guardians = Guardian::all();
+
+    return view('admin.CreateStudent', compact('stages', 'classes', 'guardians'));
+    }
+
+    public function storeStudent(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'user_name' => 'required|string|unique:students,user_name',
+        'password' => 'required|string|min:6',
+        'email' => 'required|email|unique:students,email',
+        'phone' => 'nullable|string|max:20',
+        'national_id' => 'nullable|string|max:20',
+        'birth_date' => 'required|date',
+        'address' => 'nullable|string|max:255',
+        'stage_id' => 'required|exists:stages,id',
+        'class_model_id' => 'required|exists:class_models,id',
+        'guardian_id' => 'required|exists:guardians,id',
+    ]);
+
+            $validated['password'] = Hash::make($validated['password']);
+            $validated['class_name'] = ClassModel::where('id', $request->class_model_id)->select('id', 'name')->first()->name;
+            $validated['stage_name'] = Stage::where('id', $request->stage_id)->select('id', 'name')->first()->name;
+            $validated['guardian_name'] = Guardian::where('id', $request->guardian_id)->select('id', 'name')->first()->name;
+
+    Student::create($validated);
+
+    return redirect()->route('admin.students.create')->with('success', 'Added');
+    }
+public function createGuardian()
+{
+    $students = Student::all();
+    return view('admin.CreateParent', compact('students'));
+}
+
+public function storeGuardian(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'user_name' => 'required|string|unique:guardians,user_name',
+        'password' => 'required|string|min:6',
+        'email' => 'required|email|unique:guardians,email',
+        'phone' => 'nullable|string|max:20',
+        'national_id' => 'nullable|string|max:20',
+        'student_ids' => 'nullable|array',
+        'student_ids.*' => 'exists:students,id'
+    ]);
+
+    $validated['password'] = Hash::make($validated['password']);
+    $validated['student_name'] = Student::where('id', $request->student_id)->select('id', 'name')->first()->name;
+    $guardian = Guardian::create($validated);
+
+    // ربط الطلاب بولي الأمر
+    if ($request->has('student_ids')) {
+        Student::whereIn('id', $request->student_ids)->update(['guardian_id' => $guardian->id]);
+    }
+
+    return redirect()->route('admin.guardians.create')->with('success', 'Added');
+}
 }
