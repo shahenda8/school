@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('student_degrees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('student_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('homework_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('homework_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('exam_id')->constrained()->cascadeOnDelete();
             $table->decimal('degree', 5, 2);
             $table->timestamps();

@@ -12,6 +12,7 @@ use App\Models\ClassModel;
 use PHPUnit\Metadata\Uses;
 
 use App\Models\SubjectTime;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -213,8 +214,12 @@ $subjectTimes = SubjectTime::get();
             $validated['class_name'] = ClassModel::where('id', $request->class_model_id)->select('id', 'name')->first()->name;
             $validated['stage_name'] = Stage::where('id', $request->stage_id)->select('id', 'name')->first()->name;
             $validated['guardian_name'] = Guardian::where('id', $request->guardian_id)->select('id', 'name')->first()->name;
+            $validated['class_models_id'] = $request->class_model_id;
 
-    Student::create($validated);
+    $student=  Student::create($validated);
+
+    $class = ClassModel::find($student->class_model_id);
+    $class->updateStudentsCount();
 
     return redirect()->route('admin.students.create')->with('success', 'Added');
     }
@@ -238,8 +243,7 @@ public function storeGuardian(Request $request)
     ]);
 
     $validated['password'] = Hash::make($validated['password']);
-    $validated['student_name'] = Student::where('id', $request->student_id)->select('id', 'name')->first()->name;
-    $guardian = Guardian::create($validated);
+    $guardian = Guardian::create(Arr::except($validated,['student_name', 'student_ids']));
 
     // ربط الطلاب بولي الأمر
     if ($request->has('student_ids')) {
@@ -247,5 +251,22 @@ public function storeGuardian(Request $request)
     }
 
     return redirect()->route('admin.guardians.create')->with('success', 'Added');
+}
+public function createClass()
+{
+    $stages = Stage::all();
+    return view('admin.CreateClass', compact('stages'));
+}
+public function storeClass(Request $request)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255|unique:class_models,name',
+        'stage_id' => 'required|exists:stages,id',
+        'no_students' => 'required|integer|min:0',
+    ]);
+
+    ClassModel::create($validated);
+
+    return redirect()->route('admin.classes.create')->with('success', 'Added');
 }
 }

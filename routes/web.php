@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClassManagementController;
+use App\Http\Controllers\StudentManagementController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,3 +22,7 @@ Route::get('/admin/students/create', [ClassManagementController::class, 'createS
 Route::post('/admin/students', [ClassManagementController::class, 'storeStudent'])->name('admin.students.store');
 Route::get('/admin/guardians/create', [ClassManagementController::class, 'createGuardian'])->name('admin.guardians.create');
 Route::post('/admin/guardians', [ClassManagementController::class, 'storeGuardian'])->name('admin.guardians.store');
+Route::get('/admin/classes/create', [ClassManagementController::class, 'createClass'])->name('admin.classes.create');
+Route::post('/admin/classes', [ClassManagementController::class, 'storeClass'])->name('admin.classes.store');
+Route::get('/student/exam/{exam}', [StudentManagementController::class, 'showExam'])->name('student.exam.show');
+Route::post('/student/exam/{exam}', [StudentManagementController::class, 'submitExam'])->name('student.exam.submit');

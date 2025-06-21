@@ -24,7 +24,6 @@ return new class extends Migration
             $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
             $table->foreignId('guardian_id')->nullable()->constrained()->cascadeOnDelete();
             $table->text('address');
-            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
