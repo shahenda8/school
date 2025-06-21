@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('homework_id')->nullable()->constrained()->cascadeOnDelete();
             $table->text('ques_content');
             $table->text('answer');
+            $table->text('answer_options');
             $table->float('degree');
             $table->foreignId('teacher_id')->constrained()->cascadeOnDelete();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();

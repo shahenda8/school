@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Comment;
 use App\Models\Guardian;
 use App\Models\ClassModel;
+use App\Models\StudentDegree;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
@@ -22,6 +23,11 @@ class Student extends Model
     public function comments(){
         return $this->hasMany(Comment::class);
    }
+
+   public function degrees()
+{
+    return $this->hasMany(StudentDegree::class);
+}
 
 
 }

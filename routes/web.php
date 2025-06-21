@@ -34,6 +34,7 @@ Route::post('/admin/guardians', [ClassManagementController::class, 'storeGuardia
 Route::group(['prefix'=>'admin'],function(){
     
 Route::get('login',[DashboardController::class,'login'])->name('login');
+
 Route::post('signin',[DashboardController::class,'signin'])->name('signin');
 
 });
