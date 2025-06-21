@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('class_models', function (Blueprint $table) {
             $table->id(); // Auto-incrementing ID column
-            $table->integer('no_student'); // Number of students (integer)
+            $table->integer('no_student')->default(0); // Number of students (integer)
             $table->string( 'name'); // Class name (string)
             $table->foreignId( 'stage_id')->constrained()->cascadeOnDelete(); // Class name (string)
             $table->timestamps(); // created_at and updated_at columns

@@ -218,9 +218,19 @@ $subjectTimes = SubjectTime::get();
 
     $student=  Student::create($validated);
 
-    $class = ClassModel::find($student->class_model_id);
-    $class->updateStudentsCount();
+        $class = ClassModel::where('id', $request->class_model_id)->first();
 
+    $stage = Stage::where('id', $request->stage_id)->first();
+    $class->update(
+        [
+            'no_student' => $class->no_student +1
+        ]
+    );
+    $stage->update(
+        [
+            'no_students' => $stage->no_students +1
+        ]
+    );
     return redirect()->route('admin.students.create')->with('success', 'Added');
     }
 public function createGuardian()
@@ -257,6 +267,7 @@ public function createClass()
     $stages = Stage::all();
     return view('admin.CreateClass', compact('stages'));
 }
+
 public function storeClass(Request $request)
 {
     $validated = $request->validate([
@@ -266,7 +277,14 @@ public function storeClass(Request $request)
     ]);
 
     ClassModel::create($validated);
+    $stage = Stage::where('id', $request->stage_id)->first();
+    $stage->update(
+        [
+            'no_classes' => $stage->no_classes +1
+        ]
+    );
 
     return redirect()->route('admin.classes.create')->with('success', 'Added');
 }
+
 }
