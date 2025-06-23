@@ -35,17 +35,24 @@
         </header>
 
         <section class="controls">
-            <input type="text" class="bi bi-funnel" placeholder="Search...">
 
-            <button class="filter-btn btn btn-outline-secondary">
-                <i class="bi bi-funnel"></i>
-            </button>
+                <button onclick="window.location.href='{{ route('admin.classes.create') }}'" class="add-class">
+                    ADD CLASS
+                </button>
+                <button onclick="window.location.href='{{ route('exams.create') }}'" class="add-class">
+                    ADD EXAM TIME TABLE
+                </button>
+                <button onclick="window.location.href='{{ route('admin.students.create') }}'" class="add-class">
+                    ADD STUDENT
+                </button>
+                <button onclick="window.location.href='{{ route('admin.teachers.create') }}'" class="add-class">
+                    ADD TEACHER
+                </button>
+                <button onclick="window.location.href='{{ route('admin.guardians.create') }}'" class="add-class">
+                    ADD PARENTS
+                </button>
 
-            <select>
-                <option>CLASSES OF GRADE 1</option>
-            </select>
-            <button class="add-class">ADD CLASS</button>
-        </section>
+                 </section>
 
         <table class="grades-table">
             <thead>
@@ -71,10 +78,19 @@
                     @endif
                     </td>
             @endforeach
+                        @if(!empty($routes))
                     <td class="actions">
-                        <a href="#" class="bi bi-pencil"></a>
-                        <a href="#" class="bi bi-trash3"></a>
+
+                                @if(!empty($routes['editLink']))
+                                    <a href="#" class="bi bi-pencil"></a>
+                                @endif
+
+                                @if(!empty($routes['deleteLink']))
+                                  <a href="{{ route($routes['deleteLink'] , $row->id) }}" class="bi bi-trash3"></a>
+                                @endif
+
                     </td>
+                        @endif
                 </tr>
     @endforeach
 

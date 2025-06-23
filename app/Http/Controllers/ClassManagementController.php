@@ -25,7 +25,7 @@ class ClassManagementController extends Controller
 {
     public function stageDetails(){
         $data = Stage::get();
-        $columnHeadName = ['ID', 'NO.CLASSES', 'NO.STUDENTS', 'NO.SUBJECTS', 'NO.TEACHERS', 'EXAMS TIMMETABLE', 'ACTIONS'];
+        $columnHeadName = ['ID', 'NO.CLASSES', 'NO.STUDENTS', 'NO.SUBJECTS', 'NO.TEACHERS', 'EXAMS TIMMETABLE', (!empty($routes)) ? 'ACTIONS' : null];
         $columnNames     = [
                                 ['column' => 'name',          'link' => null],
                                 ['column' => 'no_classes',     'link' => 'admin-class-view'],
@@ -43,13 +43,15 @@ class ClassManagementController extends Controller
 
         $columnHeadName = ['NAME', 'NO.STUDENTS', 'TIME TABLE', 'NO.TEACHER', 'ACTIONS'];
         $columnNames     = [
-                                ['column' => 'name',        'link' => null],
+                                ['column' => 'name',        'link' => null,],
                                 ['column' => 'no_student',  'link' => 'students-view'],
                                 ['column' => '',            'link' => 'view-class-table'],
                                 ['column' => '',            'link' => 'teacher-class-view'],
                            ];
-
-        return view('admin/classManagement', compact('data','columnHeadName', 'columnNames'));
+                           $routes = [
+                            'deleteLink' => 'class'
+                           ];
+        return view('admin/classManagement', compact('data','columnHeadName', 'columnNames', 'routes'));
     }
 
     public function studentsView($classModelId){
@@ -63,10 +65,9 @@ class ClassManagementController extends Controller
 
             return $student;
         });
-        $columnHeadName = ['ID', 'NAME','CLASS' ,'PHONE' ,'EMAIL' , 'BIRTH_DATE','NATIONAL_ID', 'PARENT_ID','ADDRESS','ACTIONS'];
         $columnNames     = [
-                                ['column' => 'id',        'link' => null],
-                                ['column' => 'name',  'link' => null],
+            ['column' => 'id',        'link' => null],
+            ['column' => 'name',  'link' => null],
                                 ['column' => "classModelName",  'link' => null],
                                 ['column' => 'phone',  'link' => null],
                                 ['column' => 'email',  'link' => null],
@@ -75,9 +76,14 @@ class ClassManagementController extends Controller
                                 ['column' => 'guardian_id',  'link' => null],
                                 ['column' => 'address',  'link' => null],
 
-                           ];
+                            ];
 
-        return view('admin/classManagement', compact('data','columnHeadName', 'columnNames'));
+                            $routes = [
+                                'deleteLink' => 'studen_delete'
+                            ];
+                            $columnHeadName = ['ID', 'NAME','CLASS' ,'PHONE' ,'EMAIL' , 'BIRTH_DATE','NATIONAL_ID', 'PARENT_ID','ADDRESS', (!empty($routes)) ? 'ACTIONS' : null];
+
+        return view('admin/classManagement', compact('data','columnHeadName', 'columnNames', 'routes'));
     }
 
     public function studentsStageView($stageId){
@@ -132,20 +138,25 @@ class ClassManagementController extends Controller
             $q->where('class_model_id', $classId);
         })
         ->get();
-        $columnHeadName = ['ID', 'NAME','SALARY','NATIONAL_DI','SUBJECT NAME','PHONE','START DATE','EMAIL', 'ACTIONS'];
         $columnNames     = [
-                                ['column' => 'id',        'link' => null],
-                                ['column' => 'name',  'link' => null],
-                                ['column' => 'salary',  'link' => null],
-                                ['column' => 'national_id',  'link' => null],
-                                ['column' => 'subject_name',  'link' => null],
-                                ['column' => 'phone',  'link' => null],
-                                ['column' => 'start_date',  'link' => null],
-                                ['column' => 'email',  'link' => null],
+            ['column' => 'id',        'link' => null],
+            ['column' => 'name',  'link' => null],
+            ['column' => 'salary',  'link' => null],
+            ['column' => 'national_id',  'link' => null],
+            ['column' => 'subject_name',  'link' => null],
+            ['column' => 'phone',  'link' => null],
+            ['column' => 'start_date',  'link' => null],
+            ['column' => 'email',  'link' => null],
 
-                           ];
+        ];
 
-        return view('admin/classManagement', compact('data','columnHeadName', 'columnNames'));
+        $routes = [
+            'deleteLink' => 'teacher.delete'
+        ];
+
+        $columnHeadName = ['ID', 'NAME','SALARY','NATIONAL_DI','SUBJECT NAME','PHONE','START DATE','EMAIL', (!empty($routes)) ? 'ACTIONS' : null];
+
+        return view('admin/classManagement', compact('data','columnHeadName', 'columnNames', 'routes'));
     }
 
     public function ViewClassTable($classId)
@@ -458,5 +469,41 @@ public function showLogin()
 
         return redirect()->back()->with('success', 'Exam timetable created successfully!');
     }
+    public function deleteClass($id)
+    {
+        $class = ClassModel::where('id', $id)->first();
+        if($class)
+        {
+            $class->delete();
+            return redirect()->back();
 
+        }else{
+                        return redirect()->back();
+        }
+    }
+    public function deleteStudent($id)
+    {
+        $student = Student::where('id', $id)->first();
+        if($student)
+        {
+            $student->delete();
+            return redirect()->back();
+
+        }else{
+                        return redirect()->back();
+        }
+    }
+
+    public function deleteTeacher($id)
+    {
+        $teacher = Teacher::where('id', $id)->first();
+        if($teacher)
+        {
+            $teacher->delete();
+            return redirect()->back();
+
+        }else{
+                        return redirect()->back();
+        }
+    }
 }
