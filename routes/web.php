@@ -59,6 +59,7 @@ Route::middleware([ ManagerOrTeacher::class])->group(function(){
 Route::middleware([ ManagerOrTeacherOrAttendee::class])->group(function(){
 
     Route::get('admin-class-view/view-class-table/{classId}', [ClassManagementController::class, 'ViewClassTable'])->name('view-class-table');
+    Route::post('/student/exam/{exam}', [StudentManagementController::class, 'submitExam'])->name('student.exam.submit');
 
 });
 
