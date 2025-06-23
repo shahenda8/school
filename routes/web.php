@@ -44,7 +44,7 @@ Route::middleware('auth:guardian')->group(function(){
 });
 
 Route::middleware([ ManagerOrTeacher::class])->group(function(){
-    Route::get('class-management', [ClassManagementController::class, 'stageDetails']);
+    Route::get('class-management', [ClassManagementController::class, 'stageDetails'])->name('class.management');
     Route::get('students-stage-view/{stageId}', [ClassManagementController::class, 'studentsStageView']);
     Route::get('admin-class-view/{stageId}', [ClassManagementController::class, 'viewClasses'])->name('class_view');
     Route::get('/student/result', [StudentManagementController::class, 'showResults'])->name('student.results');
@@ -60,14 +60,12 @@ Route::middleware([ ManagerOrTeacherOrAttendee::class])->group(function(){
 
     Route::get('admin-class-view/view-class-table/{classId}', [ClassManagementController::class, 'ViewClassTable'])->name('view-class-table');
     Route::post('/student/exam/{exam}', [StudentManagementController::class, 'submitExam'])->name('student.exam.submit');
-
+    Route::get('/student/exam/{exam}', [StudentManagementController::class, 'showExam'])->name('student.exam.show');
 });
 
 
 
 
-Route::get('/student/exam/{exam}', [StudentManagementController::class, 'showExam'])->name('student.exam.show');
-Route::post('/student/exam/{exam}', [StudentManagementController::class, 'submitExam'])->name('student.exam.submit');
 Route::get('/admin/timetable/edit/{classId}/{day}', [ClassManagementController::class, 'editDay'])->name('admin.timetable.editDay');
 Route::post('/admin/timetable/update/{classId}/{day}', [ClassManagementController::class, 'updateDay'])->name('admin.timetable.updateDay');
 Route::get('/admin/events/create', [ClassManagementController::class, 'createEvent'])->name('admin.events.create');

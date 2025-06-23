@@ -132,6 +132,7 @@ class ClassManagementController extends Controller
         return view('admin/classManagement', compact('data','columnHeadName', 'columnNames'));
     }
 
+
       public function viewClassTeachers($classId){
         $data = Teacher::
         whereHas('classModel', function($q) use($classId){

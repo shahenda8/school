@@ -20,11 +20,10 @@
                 <p class="email">Yomna@gmail.com</p>
             </div>
             <nav class="menu">
-                <a href="#">Dashboard</a>
-                <a href="#">Roles</a>
-                <a href="#">Users</a>
-                <a href="#" class="active">Grades</a>
-                <a href="#">Subjects</a>
+                <a href="#">Home</a>
+                <a href="{{ route('class.management') }}">Grades Managments</a>
+                <a href="#">Attends</a>
+                <a href="#" class="active">Create Event</a>
                 <a href="#">Subject materials</a>
                 <a href="#">Ticketing support</a>
                 <a href="#">PRE-EXAMS & RESULTS</a>
