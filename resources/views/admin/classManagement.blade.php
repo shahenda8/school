@@ -39,7 +39,7 @@
                 <button onclick="window.location.href='{{ route('admin.classes.create') }}'" class="add-class">
                     ADD CLASS
                 </button>
-                <button onclick="window.location.href='{{ route('exams.create') }}'" class="add-class">
+                <button onclick="window.location.href='{{ route('exams.table.create') }}'" class="add-class">
                     ADD EXAM TIME TABLE
                 </button>
                 <button onclick="window.location.href='{{ route('admin.students.create') }}'" class="add-class">

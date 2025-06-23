@@ -31,7 +31,7 @@ Route::middleware('auth:manager')->group(function(){
     Route::post('/admin/classes', [ClassManagementController::class, 'storeClass'])->name('admin.classes.store');
     Route::get('/admin/timetable/create', [ClassManagementController::class, 'create'])->name('admin.timetable.create');
     Route::post('/admin/timetable/store', [ClassManagementController::class, 'store'])->name('admin.timetable.store');
-    Route::get('/exams/create', [ClassManagementController::class, 'createExamTable'])->name('exams.create');
+    Route::get('/exams-table/create', [ClassManagementController::class, 'createExamTable'])->name('exams.table.create');
     Route::post('/exams/store', [ClassManagementController::class, 'storeExamTable'])->name('exams.store');
     Route::get('admin-class-view/class/{Id}', [ClassManagementController::class, 'deleteClass'])->name('class_delete');
     Route::get('delete-student/{Id}', [ClassManagementController::class, 'deleteStudent'])->name('studen_delete');
