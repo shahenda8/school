@@ -17,8 +17,10 @@ return new class extends Migration
             $table->decimal('salary', 10, 2); // Adjust precision as needed
             $table->string('national_id')->unique();
             $table->string('subject_name');
-            $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
+            // $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('stage_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('subject_id')->nullable()->constrained()->nullOnDelete();
             $table->string('user_name')->unique();
             $table->string('phone');
             $table->date('start_date');
