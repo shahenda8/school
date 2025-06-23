@@ -27,7 +27,6 @@ Route::middleware('auth:student')->group(function(){
 });
 
 Route::middleware('auth:manager')->group(function(){
-    Route::get('admin-class-view/{stageId}', [ClassManagementController::class, 'viewClasses'])->name('class_view');
     Route::get('/admin/classes/create', [ClassManagementController::class, 'createClass'])->name('admin.classes.create');
     Route::post('/admin/classes', [ClassManagementController::class, 'storeClass'])->name('admin.classes.store');
     Route::get('/admin/timetable/create', [ClassManagementController::class, 'create'])->name('admin.timetable.create');

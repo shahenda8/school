@@ -49,7 +49,7 @@ class ClassManagementController extends Controller
                                 ['column' => '',            'link' => 'teacher-class-view'],
                            ];
                            $routes = [
-                            'deleteLink' => 'class'
+                            'deleteLink' => 'class_delete'
                            ];
         return view('admin/classManagement', compact('data','columnHeadName', 'columnNames', 'routes'));
     }
