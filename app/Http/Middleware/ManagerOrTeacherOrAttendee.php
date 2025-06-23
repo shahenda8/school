@@ -15,7 +15,7 @@ class ManagerOrTeacherOrAttendee
      */
     public function handle(Request $request, Closure $next): Response
     {
-          $guards = ['teacher', 'manager', 'attendee'];
+          $guards = ['teacher', 'manager', 'student', 'guardian'];
 
         foreach ($guards as $guard) {
             if (auth($guard)->check()) {
