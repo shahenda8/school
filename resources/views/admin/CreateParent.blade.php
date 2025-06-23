@@ -94,9 +94,9 @@ body {
         <small>user email</small>
       </div>
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="#">home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">🏠 home</a></li>
         <li class="nav-item"><a class="nav-link" href="#">personal information</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">Users</a></li>
+        <li class="nav-item"><a class="nav-link active" href="#"> 🧑‍🧒 Users</a></li>
         <li class="nav-item"><a class="nav-link " href="#">Grades</a></li>
         <li class="nav-item"><a class="nav-link" href="#">classes timetable</a></li>
         <li class="nav-item"><a class="nav-link" href="#">exams timetable</a></li>

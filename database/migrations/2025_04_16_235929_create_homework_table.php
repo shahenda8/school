@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('homework', function (Blueprint $table) {
             $table->id();
-            $table->date('end_date');
             $table->foreignId('class_model_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('material_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

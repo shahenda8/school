@@ -7,8 +7,9 @@ use App\Models\Guardian;
 use App\Models\ClassModel;
 use App\Models\StudentDegree;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     protected $guarded = ['id'];
 
@@ -28,6 +29,7 @@ class Student extends Model
 {
     return $this->hasMany(StudentDegree::class);
 }
+
 
 
 }

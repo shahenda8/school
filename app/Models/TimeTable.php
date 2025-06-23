@@ -22,6 +22,10 @@ class TimeTable extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
+    public function subjectTime()
+{
+    return $this->belongsTo(SubjectTime::class);
+}
 
     public function classModel()
     {

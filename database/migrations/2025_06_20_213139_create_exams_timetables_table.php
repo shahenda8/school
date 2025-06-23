@@ -16,7 +16,7 @@ return new class extends Migration
        $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
         $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
         $table->string('name');
-        $table->string('day');
+        $table->date('day');
         $table->time('time');
         $table->string('location');
      $table->timestamps();

@@ -4,8 +4,8 @@ namespace App\Models;
 
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Model;
-
-class Manager extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+class Manager  extends Authenticatable
 {
     protected $guarded = ['id'];
 

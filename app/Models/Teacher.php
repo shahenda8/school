@@ -8,8 +8,9 @@ use App\Models\Subject;
 use App\Models\ClassModel;
 use PhpParser\Builder\Class_;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Teacher extends Model
+class Teacher  extends Authenticatable
 {
     protected $guarded = ['id'];
 

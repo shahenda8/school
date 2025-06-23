@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->time('time');
             $table->string('location');
-            $table->integer('members');
             $table->text('description');
             $table->timestamps();
         });

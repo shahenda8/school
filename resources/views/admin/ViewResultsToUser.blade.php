@@ -131,84 +131,39 @@
                 <p class="email">user email</p>
             </div>
             <nav class="menu">
-                <a href="#">home</a>
-                <a href="#">personal information</a>
-                <a href="#">Users</a>
-                <a href="#" >Grades</a>
-                <a href="#" class="active">classes timetable</a>
-                <a href="#">exams timetable</a>
+                <a href="#">Home</a>
+                <a href="#">Personal Information</a>
+                <a href="#">Classes Timetable</a>
+                <a href="#" >Exams Timetable</a>
+                <a href="#">Subjects & Materials</a>
+                <a href="#">Pre-Exams</a>
+                <a href="#">Homeworks</a>
+                <a href="#" class="active">Results</a>
             </nav>
         </aside><main class="main">
         <header class="header">
             <h1>New Generation School</h1>
         </header>
 
-        <section class="controls">
-            <!-- <input type="text" placeholder="Search...">
-            <button class="filter-btn">Filter</button> -->
-            <select>
-                <option>Grade 1</option>
-            </select>
-            <select>
-                <option>1/1</option>
-            </select>
-            <button onclick="window.location.href='{{ route('admin.timetable.create')}}'" class="add-class">ADD TIMETABLE</button>
-        </section>
-
-<table class="grades-table">
-    <thead>
+        <table class="grades-table">
+            <thead>
+                <tr>
+                    <th>Subjects</th>
+                    <th>Coursework Marks</th>
+                    <th>Final Exam</th>
+                    <th>Total Degree</th>
+                </tr>
+            </thead>
+<tbody>
+    @foreach ($results as $row)
         <tr>
-            <th>Days</th>
-            <th>lec.1<br>(7:00-8:30)</th>
-            <th>lec.2<br>(8:30-10:00)</th>
-            <th>lec.3<br>(10:00-11:30)</th>
-            <th>lec.4<br>(12:00-13:30)</th>
-            <th>lec.5<br>(13:30-15:00)</th>
-            <th>lec.6<br>(15:00-16:30)</th>
-            <th>lec.7<br>(16:30-18:00)</th>
-            <th>Action</th>
+            <td>{{ $row['subject'] }}</td>
+            <td>{{ $row['coursework'] }}</td>
+            <td>{{ $row['final'] }}</td>
+            <td>{{ $row['total'] }}</td>
         </tr>
-    </thead>
-    <tbody>
-        @php
-            $grouped = $data->groupBy('day');
-        @endphp
-
-        @foreach ($grouped as $day => $rows)
-            <tr>
-                <td>{{ $day }}</td>
-                @for ($i = 1; $i <= 7; $i++)
-                    @php
-                        $lec = $rows->firstWhere('subject_time_id', $i); // assuming you have lecture_number 1-7
-                    @endphp
-
-                    @if ($lec)
-                        <td>
-                            {{ $lec->subject->name ?? '-' }}<br>
-                            <a href="mailto:{{ $lec->teacher->email }}">{{ $lec->teacher->email }}</a>
-                        </td>
-                    @else
-                        <td> - </td>
-                    @endif
-                @endfor
-
-                <td class="actions">
-                    @php $classId = $rows->first()->class_model_id; @endphp
-                    <a href="/admin/timetable/edit/{{ $classId }}/{{ $day }}" class="bi bi-pencil"></a>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-</table>
-
-
-        <!-- <div class="pagination">
-            <button>&laquo;</button>
-            <button class="active">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>&raquo;</button>
-        </div> -->
+    @endforeach
+</tbody>
     </main>
 </div>
 

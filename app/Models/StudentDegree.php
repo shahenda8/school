@@ -19,4 +19,9 @@ public function exam()
 {
     return $this->belongsTo(Exam::class);
 }
+// public function exam()
+// {
+//     return $this->belongsTo(Exam::class)->with('subject');
+// }
+
 }

@@ -2,31 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\Stage;
+use App\Models\Manager;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Guardian;
 use App\Models\TimeTable;
+
 use App\Models\ClassModel;
 use PHPUnit\Metadata\Uses;
-
 use App\Models\SubjectTime;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\ExamsTimetable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class ClassManagementController extends Controller
 {
     public function stageDetails(){
         $data = Stage::get();
-        $columnHeadName = ['ID', 'NO.CLASSES', 'NO.STUDENTS', 'NO.SUBJECTS', 'NO.TEACHERS', 'ACTIONS'];
+        $columnHeadName = ['ID', 'NO.CLASSES', 'NO.STUDENTS', 'NO.SUBJECTS', 'NO.TEACHERS', 'EXAMS TIMMETABLE', 'ACTIONS'];
         $columnNames     = [
                                 ['column' => 'name',          'link' => null],
-                                ['column' => 'no_classes',     'link' => 'class-view'],
+                                ['column' => 'no_classes',     'link' => 'admin-class-view'],
                                 ['column' => 'no_students',    'link' => 'students-stage-view'],
                                 ['column' => 'no_subjects',    'link' => null],
                                 ['column' => 'no_teachers',    'link' => 'class-view/teacher-view'],
+                                ['column' => '',    'link' => ''],//TODO
                             ];
 
         return view('admin/classManagement', compact('data','columnHeadName', 'columnNames'));
@@ -286,5 +292,171 @@ public function storeClass(Request $request)
 
     return redirect()->route('admin.classes.create')->with('success', 'Added');
 }
+
+public function create()
+{
+    return view('admin.CreateClassTimetable', [
+        'grades' => Stage::all(),
+        'classes' => ClassModel::all(),
+        'teachers' => Teacher::all(),
+        'subjects' => Subject::all(),
+        'times' => SubjectTime::all(),
+    ]);
+}
+
+public function store(Request $request)
+{
+    $data = $request->input('timetable');
+
+    foreach ($data as $day => $lectures) {
+        foreach ($lectures as $lecture) {
+            TimeTable::create([
+                'day' => $day,
+                'subject_id' => $lecture['subject_id'],
+                'teacher_id' => $lecture['teacher_id'],
+                'subject_time_id' => $lecture['subject_time_id'],
+                'class_model_id' => $request->input('class_id'),
+            ]);
+        }
+    }
+
+    return redirect()->back()->with('success', 'تم إنشاء جدول الحصص بنجاح');
+}
+
+public function editDay($classId, $day)
+{
+    $subjects = Subject::all();
+    $teachers = Teacher::all();
+
+    // جدول الحصص لليوم ده
+    $daySchedule = TimeTable::where('class_model_id', $classId)
+        ->where('day', strtoupper($day))
+        ->orderBy('subject_time_id')
+        ->get();
+
+    return view('admin.EditDayClassTimetable', compact('classId', 'day', 'daySchedule', 'subjects', 'teachers'));
+}
+public function updateDay(Request $request, $classId, $day)
+{
+    $data = $request->input('timetable');
+    foreach ($data as $index => $item) {
+        $existing = TimeTable::where('class_model_id', $classId)
+            ->where('day', strtoupper($day))
+            ->where('subject_time_id', $index + 1)
+            ->first();
+        if ($existing) {
+            $existing->update([
+                'subject_id' => $item['subject_id'],
+                'teacher_id' => $item['teacher_id'],
+            ]);
+        }
+    }
+
+    return redirect()->back()->with('success', 'تم تعديل جدول ' . ucfirst($day) . ' بنجاح.');
+}
+
+public function createEvent()
+{
+    return view('admin.CreateEvent');
+}
+
+public function storeEvent(Request $request)
+{
+    $request->validate([
+        'eventName' => 'required|string|max:255',
+        'eventDate' => 'required|date',
+        'eventTime' => 'required',
+        'eventLocation' => 'required|string|max:255',
+        'eventDescription' => 'nullable|string',
+    ]);
+   $storeEvent = Event::create([
+        'name' => $request->eventName,
+        'date' => $request->eventDate,
+        'time' => $request->eventTime,
+        'location' => $request->eventLocation,
+        'description' => $request->eventDescription,
+    ]);
+
+    return redirect()->route('admin.events.create')->with('success', 'Event added successfully!');
+}
+public function showLogin()
+    {
+        return view('admin.Login');
+    }
+
+    public function login(Request $request)
+    {
+        $request->validate([
+            'user_name' => 'required',
+            'password' => 'required'
+        ]);
+
+        $credentials = $request->only('user_name', 'password');
+
+        // 1. Check Student
+        $student = Student::where('user_name', $credentials['user_name'])->first();
+        if ($student && Hash::check($credentials['password'], $student->password)) {
+            Auth::guard('student')->login($student);
+
+            return redirect()->route('student.dashboard'); // ← صفحات الطالب
+        }
+
+        // 2. Check Guardian
+        $guardian = Guardian::where('user_name', $credentials['user_name'])->first();
+        if ($guardian && Hash::check($credentials['password'], $guardian->password)) {
+            Auth::guard('guardian')->login($guardian);
+
+            return redirect()->route('guardian.dashboard'); // ← صفحات ولي الأمر
+        }
+
+        // 3. Check Teacher
+        $teacher = Teacher::where('user_name', $credentials['user_name'])->first();
+        if ($teacher && Hash::check($credentials['password'], $teacher->password)) {
+            Auth::guard('teacher')->login($teacher);
+            return redirect()->route('teacher.dashboard'); // ← صفحات المدرس
+        }
+
+        // 4. Check Admin (Manager)
+        $manager = Manager::where('user_name', $credentials['user_name'])->first();
+        if ($manager && Hash::check($credentials['password'], $manager->password)) {
+            Auth::guard('manager')->login($manager);
+
+            return redirect()->route('admin.dashboard'); // ← صفحات الأدمن
+        }
+
+        // فشل تسجيل الدخول
+        return redirect()->route('login')->with('error', 'بيانات الدخول غير صحيحة');
+    }
+    public function createExamTable()
+    {
+        $grades = Stage::all();
+        $subjects = Subject::all();
+        $examTypes = ['Final Exam', 'Midterm', 'Quiz'];
+
+        return view('admin.CreateExamTimetable', compact('grades', 'subjects', 'examTypes'));
+    }
+
+    public function storeExamTable(Request $request)
+    {
+        $request->validate([
+            'stage_id' => 'required|exists:stages,id',
+            'subject_id' => 'required|exists:subjects,id',
+            'name' => 'required|string',
+            'day' => 'required|string',
+            'time' => 'required|string',
+            'location' => 'required|string'
+        ]);
+
+        ExamsTimetable::create([
+            'stage_id' => $request->stage_id,
+            'subject_id' => $request->subject_id,
+            'name' => $request->name,
+            'day' => $request->day,
+            'time' => $request->time,
+            'location' => $request->location,
+        ]);
+
+        return redirect()->back()->with('success', 'Exam timetable created successfully!');
+    }
 
 }

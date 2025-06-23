@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Teacher;
+use App\Models\ExamsTimetable;
 use Illuminate\Database\Eloquent\Model;
 
 class Stage extends Model
@@ -12,4 +13,8 @@ class Stage extends Model
     public function teachers(){
         return $this->hasMany(Teacher::class);
     }
+    public function examTimetables()
+{
+    return $this->hasMany(ExamsTimetable::class);
+}
 }

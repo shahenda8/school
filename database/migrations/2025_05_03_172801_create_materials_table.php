@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('type');
-            $table->enum('files', ['pdf', 'video']);
-            $table->integer('term');
+            $table->enum('type', ['pdf', 'URL', 'image']);
+            $table->string('files');
             $table->foreignId('stage_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
