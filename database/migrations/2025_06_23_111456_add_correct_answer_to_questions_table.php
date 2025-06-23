@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exams_timetables', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::table('questions', function (Blueprint $table) {
+            //
+            $table->integer('correct_answer');
         });
     }
 
@@ -22,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exams_timetables');
+        Schema::table('questions', function (Blueprint $table) {
+            //
+        });
     }
 };

@@ -12,5 +12,7 @@ class Subject extends Model
     public function teachers(){
         return $this->hasMany(Teacher::class);
     }
-
+    public function stage(){
+        return $this->belongsTo(Stage::class,'stage_id');
+    }
 }
