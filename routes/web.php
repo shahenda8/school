@@ -6,6 +6,12 @@ use App\Http\Middleware\ManagerOrTeacher;
 use App\Http\Controllers\ClassManagementController;
 use App\Http\Middleware\ManagerOrTeacherOrAttendee;
 use App\Http\Controllers\StudentManagementController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\QuestionController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -45,7 +51,7 @@ Route::middleware('auth:guardian')->group(function(){
 });
 
 Route::middleware([ ManagerOrTeacher::class])->group(function(){
-    Route::get('class-management', [ClassManagementController::class, 'stageDetails']);
+    Route::get('class-management', [ClassManagementController::class, 'stageDetails'])->name('class-managment');
     Route::get('students-stage-view/{stageId}', [ClassManagementController::class, 'studentsStageView']);
     Route::get('admin-class-view/{stageId}', [ClassManagementController::class, 'viewClasses'])->name('class_view');
     Route::get('/student/result', [StudentManagementController::class, 'showResults'])->name('student.results');
@@ -66,6 +72,7 @@ Route::middleware([ ManagerOrTeacherOrAttendee::class])->group(function(){
 
 
 
+
 Route::get('/student/exam/{exam}', [StudentManagementController::class, 'showExam'])->name('student.exam.show');
 Route::post('/student/exam/{exam}', [StudentManagementController::class, 'submitExam'])->name('student.exam.submit');
 Route::get('/admin/timetable/edit/{classId}/{day}', [ClassManagementController::class, 'editDay'])->name('admin.timetable.editDay');
@@ -80,3 +87,40 @@ Route::get('/student/dashboard', fn() => 'صفحات الطالب')->name('stude
 Route::get('/guardian/dashboard', fn() => 'صفحات ولي الأمر')->name('guardian.dashboard');
 Route::get('/teacher/dashboard', fn() => 'صفحات المدرس')->name('teacher.dashboard');
 Route::get('/admin/dashboard', fn() => 'صفحات الأدمن')->name('admin.dashboard');
+
+
+
+
+
+
+
+
+
+//yomna
+Route::middleware(['auth:teacher'])->group(function () {
+        Route::get('teacher/dashboard',[DashboardController::class,'dashboard'])->name('teacher.dashboard');
+
+Route::get('class-view/{stageId}', [ClassManagementController::class, 'viewClasses'])->name('class_view');
+Route::get('class-view/students-view/{classModelsId}', [ClassManagementController::class, 'studentsView']);
+Route::get('class-view/view-class-table/{classId}', [ClassManagementController::class, 'ViewClassTable']);
+
+// ============================subjects ====================
+Route::resource('subjects',SubjectController::class);
+Route::resource('materials',MaterialController::class);
+Route::resource('questions',QuestionController::class);
+Route::resource('exams',ExamController::class);
+});
+
+
+Route::middleware(['auth:manager'])->group(function () {
+        Route::get('manager/dashboard',[DashboardController::class,'dashboard'])->name('manager.dashboard');
+});
+
+Route::group(['prefix'=>'admin'],function(){
+
+// Route::get('login',[DashboardController::class,'login'])->name('login');
+
+Route::post('signin',[DashboardController::class,'signin'])->name('signin');
+
+});
+

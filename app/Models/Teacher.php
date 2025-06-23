@@ -13,7 +13,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Teacher  extends Authenticatable
 {
     protected $guarded = ['id'];
+ protected $guard = 'teacher';
 
+  protected $hidden = [
+        'password',
+    ];
     public function classModel(){
         return $this->belongsToMany(ClassModel::class,'time_table');
    }

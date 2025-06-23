@@ -7,4 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Question extends Model
 {
     protected $guarded = ['id'];
+     public function subject(){
+        return $this->belongsTo(Subject::class,'subject_id');
+    }
 }
