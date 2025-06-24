@@ -132,13 +132,12 @@
             </div>
             <nav class="menu">
                 <a href="#">Home</a>
-                <a href="#">Personal Information</a>
-                <a href="#">Classes Timetable</a>
-                <a href="#" >Exams Timetable</a>
-                <a href="#">Subjects & Materials</a>
-                <a href="#">Pre-Exams</a>
-                <a href="#">Homeworks</a>
-                <a href="#" class="active">Results</a>
+            <a href="#">🧑‍🧒Personal Information</a>
+            <a href="{{ route('view-class-table') }}">📋Classes Timetable</a>
+            <a href="{{ route('exams.show') }}">📋Exams Timetable</a>
+            <a href="{{ route('subjects.index') }}">📚Subjects & Materials</a>
+            <a href="{{ route('student.pre_exams') }}" class="active">📋Pre-Exams</a>
+            <a href="{{ route('student.results') }}">📊Results</a>
             </nav>
         </aside><main class="main">
         <header class="header">

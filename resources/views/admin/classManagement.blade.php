@@ -20,13 +20,13 @@
                 <p class="email">Yomna@gmail.com</p>
             </div>
             <nav class="menu">
-                <a href="#">Home</a>
-                <a href="{{ route('class.management') }}">Grades Managments</a>
-                <a href="#">Attends</a>
-                <a href="#" class="active">Create Event</a>
-                <a href="#">Subject materials</a>
-                <a href="#">Ticketing support</a>
-                <a href="#">PRE-EXAMS & RESULTS</a>
+                <a href="{{ route('events.index') }}">🏠Home</a>
+                <a href="{{ route('class.management') }}" class="active">📊Grades Managments</a>
+                <a href="{{ route('attendance.index') }}">📋Record Attends</a>
+                <a href="{{ route('attendance.reports') }}">📋Attends reports</a>
+                <a href="{{ route('admin.events.create') }}">🗓️Create Event</a>
+                <a href="{{ route('subjects.index') }}">📚Subject materials</a>
+                {{--  <a href="exams.create">📝Create PRE-EXAMS</a>  --}}
             </nav>
         </aside><main class="main">
         <header class="header">
@@ -96,13 +96,6 @@
             </tbody>
         </table>
 
-       {{--  <div class="pagination">
-            <button>&laquo;</button>
-            <button class="active">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>&raquo;</button>
-        </div>  --}}
     </main>
 </div>
 

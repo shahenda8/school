@@ -93,14 +93,14 @@ body {
         <small>user email</small>
       </div>
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Personal Information</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Classes Timetable</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Exams Timetable</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Subjects & Materials</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">Pre-Exams</a></li>
+        <li class="nav-item"><a href="{{ route('events.index') }}">🏠Home</a></li>
+        <li class="nav-item"> <a href="#">🧑‍🧒Personal Information</a></li>
+        <li class="nav-item"><a href="{{ route('view-class-table') }}">📋Classes Timetable</a></li>
+        <li class="nav-item"> <a href="{{ route('exams.show') }}">📋Exams Timetable</a></li>
+        <li class="nav-item"><a href="{{ route('subjects.index') }}">📚Subjects & Materials</a></li>
+        <li class="nav-item"> <a href="{{ route('student.pre_exams') }}" class="active">📋Pre-Exams</a>
         <li class="nav-item"><a class="nav-link " href="#">Homeworks</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Results</a></li>
+        <li class="nav-item"> <a href="{{ route('student.results') }}">📊Results</a></li>
       </ul>
     </div><!-- Main Content -->
 <div class="main-content flex-grow-1">

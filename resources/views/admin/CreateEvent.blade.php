@@ -173,16 +173,13 @@ body {
         <p> Nancy@gmail.com </p>
       </div>
       <ul>
-        <li> 🏠 Home </li>
-        <li> 🧑‍🧒 Users </li>
-        <li> 📊 Grades </li>
-        <li> 📚 Subject </li>
-        <li> 📂 Subject Material </li>
-        <li> ❓ Question </li>
-        <li> 📝 Exam </li>
-        <li class="active"> 🗓️ Event </li>
-        <li> 📋 Attendance </li>
-        <li> 🎫 Ticketing support </li>
+        <li class="nav-item"><a href="{{ route('events.index') }}">🏠Home</a></li>
+        <li class="nav-item"><a href="{{ route('class.management') }}" class="active">📊Grades Managments</a></li>
+        <li class="nav-item"><a href="{{ route('attendance.index') }}">📋Record Attends</a></li>
+        <li class="nav-item"><a href="{{ route('attendance.reports') }}">📋Attends reports</a></li>
+        <li class="nav-item"> <a href="{{ route('admin.events.create') }}">🗓️Create Event</a></li>
+        {{--  <li class="nav-item"><a href="{{ route('materials.bySubject') }}">📚Subject materials</a></li>  --}}
+        <li class="nav-item"> <a href="#">📝Create PRE-EXAMS</a></li>
       </ul>
     </div>
 

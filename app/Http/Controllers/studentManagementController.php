@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exam;
+use App\Models\Event;
+use App\Models\Stage;
+use App\Models\Subject;
+use App\Models\Homework;
+use App\Models\Material;
 use Illuminate\Http\Request;
 use App\Models\StudentDegree;
-use App\Models\Subject;
+use App\Models\ExamsTimetable;
 use Illuminate\Support\Facades\Auth;
 
 class studentManagementController extends Controller
@@ -114,5 +119,64 @@ public function showPreExamTable()
 
     return view('admin.ViewAvailExams', compact('results'));
 }
+
+    public function show($id)
+    {
+        $grade = Stage::findOrFail($id);
+
+        $timetable = ExamsTimetable::where('stage_id', $id)
+            ->with('subject')
+            ->get();
+
+        return view('admin.ViewExamTimetable', compact('timetable', 'grade'));
+    }
+    public function index()
+    {
+        $user = Auth::user();
+        $student = $user->student;
+
+        if (!$student) {
+            abort(403, 'Student account not found.');
+        }
+
+        $stageId = $student->stage_id;
+
+        $subjects = Subject::where('stage_id', $stageId)->get();
+
+        return view('admin.ViewSubjects', compact('subjects'));
+    }
+
+    public function showMaterials($id)
+    {
+        return "Show materials for subject ID: " . $id;
+    }
+    public function showBySubject($subjectId)
+    {
+        $user = Auth::user();
+        $student = $user->student;
+
+        if (!$student) {
+            abort(403, 'Student not found.');
+        }
+
+        // Get subject only if it belongs to student stage
+        $subject = Subject::where('id', $subjectId)
+                          ->where('stage_id', $student->stage_id)
+                          ->firstOrFail();
+
+        $materials = Material::where('subject_id', $subjectId)->get();
+
+        // Get homeworks for the same subject and the student’s class
+        $homeworks = Homework::where('subject_id', $subjectId)
+                             ->where('class_model_id', $student->class_model_id)
+                             ->get();
+
+        return view('admin.ViewMaterial', compact('materials', 'subject', 'homeworks'));
+    }
+     public function viewEvent()
+    {
+        $events = Event::orderBy('date', 'desc')->get();
+        return view('admin.ViewEvents', compact('events'));
+    }
 
 }

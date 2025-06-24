@@ -93,15 +93,13 @@ body {
         <small>user email</small>
       </div>
       <ul class="nav flex-column">
-        <li class="nav-item"><a class="nav-link" href="#">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Roles</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Users</a></li>
-        <li class="nav-item"><a class="nav-link active" href="#">Grades</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Subjects</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Subject materials</a></li>
-        <li class="nav-item"><a class="nav-link " href="#">Question</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Exams</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Ticketing support</a></li>
+        <li class="nav-item"><a href="{{ route('events.index') }}">🏠Home</a></li>
+        <li class="nav-item"><a href="{{ route('class.management') }}" class="active">📊Grades Managments</a></li>
+        <li class="nav-item"><a href="{{ route('attendance.index') }}">📋Record Attends</a></li>
+        <li class="nav-item"><a href="{{ route('attendance.reports') }}">📋Attends reports</a></li>
+        <li class="nav-item"> <a href="{{ route('admin.events.create') }}">🗓️Create Event</a></li>
+        {{--  <li class="nav-item"><a href="{{ route('materials.bySubject') }}">📚Subject materials</a></li>  --}}
+        <li class="nav-item"> <a href="#">📝Create PRE-EXAMS</a></li>
       </ul>
     </div><!-- Main Content -->
 <div class="main-content flex-grow-1">

@@ -131,12 +131,13 @@
                 <p class="email">user email</p>
             </div>
             <nav class="menu">
-                <a href="#">home</a>
-                <a href="#">personal information</a>
-                <a href="#">Users</a>
-                <a href="#" >Grades</a>
-                <a href="#" class="active">classes timetable</a>
-                <a href="#">exams timetable</a>
+                <a href="{{ route('events.index') }}">🏠Home</a>
+                <a href="{{ route('class.management') }}" class="active">📊Grades Managments</a>
+                <a href="{{ route('attendance.index') }}">📋Record Attends</a>
+                <a href="{{ route('attendance.reports') }}">📋Attends reports</a>
+                <a href="{{ route('admin.events.create') }}">🗓️Create Event</a>
+                {{--  <a href="{{ route('materials.bySubject') }}">📚Subject materials</a>  --}}
+                <a href="#"></a>
             </nav>
         </aside><main class="main">
         <header class="header">

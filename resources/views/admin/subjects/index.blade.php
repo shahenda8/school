@@ -19,7 +19,7 @@
             <th>ID</th>
             <td>Image</td>
             <th>Subject Name</th>
-            <th>Subject Grade</th>            
+            <th>Subject Grade</th>
             <th>Description</th>
             <th>Action</th>
           </tr>

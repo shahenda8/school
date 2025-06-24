@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('class_model_id')->constrained()->cascadeOnDelete();
             $table->string('name');
+            $table->string('file');
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->foreignId('material_id')->nullable()->constrained()->cascadeOnDelete();
             $table->timestamps();

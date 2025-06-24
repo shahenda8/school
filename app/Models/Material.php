@@ -14,4 +14,5 @@ class Material extends Model
     public function stage(){
         return $this->belongsTo(Stage::class,'stage_id');
     }
+    
 }

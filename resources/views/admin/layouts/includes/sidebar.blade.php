@@ -9,11 +9,17 @@
       @if(auth('teacher')->check())
        <li  class="{{request()->routeIs('teacher.dashboard')?'active':''}}"><a href="{{route('teacher.dashboard')}}"><i class="fa fa-home"></i>Dashboard</a></li>
 
-       <li  class="{{request()->routeIs('class-managment')?'active':''}}"><a href="{{route('class-managment')}}"><i class="fas fa-bars-progress"></i>Class Managment</a></li>
+       <li  class="{{request()->routeIs('class-management')?'active':''}}">
+       <a href="{{route('class.management')}}">
+       <i class="fas fa-bars-progress">
+       </i>
+       Class Managment
+       </a>
+       </li>
 
        <li  class="{{request()->routeIs('subjects.index')?'active':''}}"><a href="{{route('subjects.index')}}"><i class="fab fa-discourse"></i>Subjects</a></li>
       <li  class="{{request()->routeIs('materials.index')?'active':''}}"><a href="{{route('materials.index')}}"><i class="fas fa-person-chalkboard"></i>Materials</a></li>
-    
+
       <li  class="{{request()->routeIs('questions.index')?'active':''}}"><a href="{{route('questions.index')}}"><i class="fa fa-question"></i>Questions</a></li>
       <li  class="{{request()->routeIs('exams.index')?'active':''}}"><a href="{{route('exams.index')}}"><i class="fa fa-file"></i>Exams</a></li>
       @elseif(auth('manager')->check())

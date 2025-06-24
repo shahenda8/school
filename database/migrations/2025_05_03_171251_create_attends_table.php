@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
             $table->foreignId('class_model_id')->nullable()->constrained()->cascadeOnDelete();
             $table->date('date');
+            $table->string('status');
             $table->timestamps();
         });
     }

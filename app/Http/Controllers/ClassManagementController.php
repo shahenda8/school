@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Stage;
+use App\Models\Attend;
 use App\Models\Manager;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Guardian;
-use App\Models\TimeTable;
 
+use App\Models\TimeTable;
 use App\Models\ClassModel;
 use PHPUnit\Metadata\Uses;
 use App\Models\SubjectTime;
@@ -32,9 +33,8 @@ class ClassManagementController extends Controller
                                 ['column' => 'no_students',    'link' => 'students-stage-view'],
                                 ['column' => 'no_subjects',    'link' => null],
                                 ['column' => 'no_teachers',    'link' => 'class-view/teacher-view'],
-                                ['column' => '',    'link' => ''],//TODO
+                                ['column' => '',    'link' => 'exams/grade'],//TODO
                             ];
-
         return view('admin/classManagement', compact('data','columnHeadName', 'columnNames'));
     }
 
@@ -244,9 +244,10 @@ $subjectTimes = SubjectTime::get();
             'no_student' => $class->no_student +1
         ]
     );
+
     $stage->update(
         [
-            'no_students' => $stage->no_students +1
+            'no_students' => $stage->no_students + 1
         ]
     );
     return redirect()->route('admin.students.create')->with('success', 'Added');
@@ -458,7 +459,6 @@ public function showLogin()
             'time' => 'required|string',
             'location' => 'required|string'
         ]);
-
         ExamsTimetable::create([
             'stage_id' => $request->stage_id,
             'subject_id' => $request->subject_id,
@@ -506,5 +506,50 @@ public function showLogin()
         }else{
                         return redirect()->back();
         }
+    }
+     public function index()
+    {
+        $classes = ClassModel::all();
+        $subjects = Subject::all();
+        return view('admin.RecordAttend', compact('classes', 'subjects'));
+    }
+
+    public function storeAttend(Request $request)
+    {
+        $teacherId = Auth::guard('teacher')->id();
+        $data = $request->input('attendance');
+
+        foreach ($data as $record) {
+            Attend::create([
+                'teacher_id' => $teacherId,
+                'student_id' => $record['student_id'],
+                'subject_id' => $record['subject_id'],
+                'class_model_id' => $request->class_id,
+                'date' => $request->date,
+                'status' => $record['status'],
+            ]);
+        }
+
+        return back()->with('success', 'Attendance saved successfully.');
+    }
+    public function indexViewAttend(Request $request)
+    {
+        $classes = ClassModel::all();
+
+        $query = Attend::with(['student', 'teacher', 'classModel']);
+
+
+        if ($request->has('class_id') && $request->class_id != '') {
+            $query->where('class_model_id', $request->class_id);
+        }
+
+
+        if ($request->has('date') && $request->date != '') {
+            $query->where('date', $request->date);
+        }
+
+        $attendances = $query->get();
+
+        return view('admin.ViewAttendReport', compact('attendances', 'classes'));
     }
 }

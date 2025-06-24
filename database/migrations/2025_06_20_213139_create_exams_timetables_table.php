@@ -17,7 +17,7 @@ return new class extends Migration
         $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
         $table->string('name');
         $table->date('day');
-        $table->time('time');
+        $table->string('time');
         $table->string('location');
      $table->timestamps();
         });
