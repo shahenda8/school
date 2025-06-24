@@ -14,7 +14,11 @@ use App\Http\Controllers\QuestionController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->guard('manager')->check()) {
+        return redirect()->route('class.management'); // أو أي صفحة تانية
+    }
+
+    return redirect()->route('login');
 });
 
 Route::middleware('auth:teacher')->group(function(){
@@ -27,6 +31,7 @@ Route::middleware('auth:student')->group(function(){
 });
 
 Route::middleware('auth:manager')->group(function(){
+
     Route::get('/admin/classes/create', [ClassManagementController::class, 'createClass'])->name('admin.classes.create');
     Route::post('/admin/classes', [ClassManagementController::class, 'storeClass'])->name('admin.classes.store');//صفحة انشاء فصل
     Route::get('/admin/timetable/create', [ClassManagementController::class, 'create'])->name('admin.timetable.create');//صفحة انشاء الجدول بتاع الحصص
