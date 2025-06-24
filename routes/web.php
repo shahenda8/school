@@ -92,7 +92,7 @@ Route::post('/login', [ClassManagementController::class, 'login'])->name('login.
 Route::get('/student/dashboard', fn() => 'صفحات الطالب')->name('student.dashboard');
 Route::get('/guardian/dashboard', fn() => 'صفحات ولي الأمر')->name('guardian.dashboard');
 Route::get('/teacher/dashboard', fn() => 'صفحات المدرس')->name('teacher.dashboard');
-Route::get('/admin/dashboard', fn() => 'صفحات الأدمن')->name('admin.dashboard');
+// Route::get('/admin/dashboard', fn() => 'صفحات الأدمن')->name('admin.dashboard');
 
 
 

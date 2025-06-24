@@ -411,7 +411,7 @@ public function showLogin()
         if ($student && Hash::check($credentials['password'], $student->password)) {
             Auth::guard('student')->login($student);
 
-            return redirect()->route('student.dashboard'); // ← صفحات الطالب
+            return redirect()->route('events.index'); // ← صفحات الطالب
         }
 
         // 2. Check Guardian
@@ -419,14 +419,14 @@ public function showLogin()
         if ($guardian && Hash::check($credentials['password'], $guardian->password)) {
             Auth::guard('guardian')->login($guardian);
 
-            return redirect()->route('guardian.dashboard'); // ← صفحات ولي الأمر
+            return redirect()->route('events.index'); // ← صفحات ولي الأمر
         }
 
         // 3. Check Teacher
         $teacher = Teacher::where('user_name', $credentials['user_name'])->first();
         if ($teacher && Hash::check($credentials['password'], $teacher->password)) {
             Auth::guard('teacher')->login($teacher);
-            return redirect()->route('teacher.dashboard'); // ← صفحات المدرس
+            return redirect()->route('class.management'); // ← صفحات المدرس
         }
 
         // 4. Check Admin (Manager)
@@ -434,7 +434,7 @@ public function showLogin()
         if ($manager && Hash::check($credentials['password'], $manager->password)) {
             Auth::guard('manager')->login($manager);
 
-            return redirect()->route('admin.dashboard'); // ← صفحات الأدمن
+            return redirect()->route('class.management'); // ← صفحات الأدمن
         }
 
         // فشل تسجيل الدخول
